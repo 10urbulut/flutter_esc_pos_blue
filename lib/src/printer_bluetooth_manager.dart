@@ -8,7 +8,8 @@
 
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:rxdart/rxdart.dart' as rx;
 import './enums.dart';
@@ -25,7 +26,7 @@ class PrinterBluetooth {
 
 /// Printer Bluetooth Manager
 class PrinterBluetoothManager {
-  final FlutterBlue _flutterBlue = FlutterBlue.instance;
+  final FlutterBluePlus _flutterBlue = FlutterBluePlus.instance;
   bool _isPrinting = false;
   bool _isConnected = false;
 
@@ -52,7 +53,7 @@ class PrinterBluetoothManager {
     _isScanningSubscription =
         _flutterBlue.isScanning.listen((isScanningCurrent) async {
       // If isScanning value changed (scan just stopped)
-      if (_isScanning.value! && !isScanningCurrent) {
+      if (_isScanning.value && !isScanningCurrent) {
         _scanResultsSubscription.cancel();
         _isScanningSubscription.cancel();
       }
@@ -83,7 +84,7 @@ class PrinterBluetoothManager {
     if (_selectedPrinter == null) {
       debugPrint(1.toString());
       return Future<PosPrintResult>.value(PosPrintResult.printerNotSelected);
-    } else if (_isScanning.value!) {
+    } else if (_isScanning.value) {
       debugPrint(2.toString());
       return Future<PosPrintResult>.value(PosPrintResult.scanInProgress);
     } else if (_isPrinting) {
